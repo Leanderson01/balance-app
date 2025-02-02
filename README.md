@@ -23,7 +23,7 @@ O Desafio do Equilíbrio é um jogo onde o objetivo é manter seu dispositivo o 
 
 ### Sensores e APIs Nativas
 
-- `expo-sensors` (Acelerômetro)
+- `expo-sensors` (Acelerômetro/Giroscópio/Temporizador)
 - `expo-haptics` (Feedback tátil)
 - `@react-native-async-storage/async-storage` (Armazenamento local)
 
