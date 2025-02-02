@@ -46,6 +46,33 @@ O Desafio do Equilíbrio é um jogo onde o objetivo é manter seu dispositivo o 
 
 4. Use o aplicativo Expo Go no seu dispositivo móvel para escanear o QR Code ou execute em um emulador.
 
+## 📦 Como Gerar o APK
+
+1. Instale o EAS CLI:
+   ```bash
+   npm install -g eas-cli
+   ```
+
+2. Faça login na sua conta Expo:
+   ```bash
+   eas login
+   ```
+
+3. Configure o projeto para build:
+   ```bash
+   eas build:configure
+   ```
+
+4. Gere o APK para desenvolvimento:
+   ```bash
+   eas build -p android --profile preview
+   ```
+
+5. Ou gere o APK para produção:
+   ```bash
+   eas build -p android --profile production
+   ```
+
 ## 📱 Funcionalidades
 
 ### Jogo
