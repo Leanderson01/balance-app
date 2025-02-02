@@ -1,50 +1,83 @@
-# Welcome to your Expo app 👋
+# Desafio do Equilíbrio
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+Um jogo mobile desenvolvido com React Native e Expo que testa suas habilidades de estabilidade usando os sensores do dispositivo.
 
-## Get started
+## 📱 Sobre o Projeto
 
-1. Install dependencies
+O Desafio do Equilíbrio é um jogo onde o objetivo é manter seu dispositivo o mais estável possível. Uma bolinha na tela reage aos movimentos do seu dispositivo através do acelerômetro, e você marca pontos mantendo-a estável no centro de um círculo.
 
+### Características Principais
+
+- 🎮 Gameplay simples e viciante
+- 📊 Sistema de pontuação em tempo real
+- 🏆 Sistema de recordes
+- 📱 Interface limpa e intuitiva
+- 🔄 Feedback visual e tátil
+
+## 🛠️ Tecnologias Utilizadas
+
+- [React Native](https://reactnative.dev/)
+- [Expo](https://expo.dev/)
+- [TypeScript](https://www.typescriptlang.org/)
+- [Expo Router](https://docs.expo.dev/router/introduction/)
+
+### Sensores e APIs Nativas
+
+- `expo-sensors` (Acelerômetro)
+- `expo-haptics` (Feedback tátil)
+- `@react-native-async-storage/async-storage` (Armazenamento local)
+
+## 🚀 Como Executar
+
+1. Clone o repositório:
+   ```bash
+   git clone [url-do-repositorio]
+   ```
+
+2. Instale as dependências:
    ```bash
    npm install
    ```
 
-2. Start the app
-
+3. Inicie o projeto:
    ```bash
-    npx expo start
+   npx expo start
    ```
 
-In the output, you'll find options to open the app in a
+4. Use o aplicativo Expo Go no seu dispositivo móvel para escanear o QR Code ou execute em um emulador.
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+## 📱 Funcionalidades
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+### Jogo
+- Timer de 30 segundos
+- Pontuação baseada na estabilidade do dispositivo
+- Feedback visual da estabilidade através da cor da bolinha
+- Feedback tátil ao pontuar
 
-## Get a fresh project
+### Sistema de Pontuação
+- Pontos são acumulados a cada segundo que o dispositivo permanece estável
+- Sistema de recordes persistente
+- Histórico da última pontuação
 
-When you're ready, run:
+## 🎮 Como Jogar
 
-```bash
-npm run reset-project
-```
+1. Inicie o jogo tocando em "Iniciar Jogo"
+2. Mantenha seu dispositivo o mais estável possível
+3. A bolinha ficará:
+   - 🔵 Azul quando estável (pontuando)
+   - 🔴 Vermelha quando instável
+4. Tente manter a bolinha no centro do círculo
+5. Cada segundo estável = 1 ponto
+6. O jogo termina após 30 segundos
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+## 🤝 Contribuindo
 
-## Learn more
+Contribuições são sempre bem-vindas! Sinta-se à vontade para:
 
-To learn more about developing your project with Expo, look at the following resources:
+1. Reportar bugs
+2. Sugerir novas funcionalidades
+3. Enviar pull requests
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+## 📄 Licença
 
-## Join the community
-
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+Este projeto foi feito por [@Leanderson](https://github.com/leanderson01) e por [@Saulo](https://github.com/saulocastelob)
