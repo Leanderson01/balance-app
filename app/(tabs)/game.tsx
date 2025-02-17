@@ -1,7 +1,7 @@
 import { useEffect, useState, useCallback } from 'react';
 import { StyleSheet, View, Text } from 'react-native';
 import { useRouter } from 'expo-router';
-import { Accelerometer } from 'expo-sensors';
+import { Accelerometer, Gyroscope } from 'expo-sensors';
 import * as Haptics from 'expo-haptics';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -11,6 +11,11 @@ export default function GameScreen() {
   const [timeLeft, setTimeLeft] = useState(30);
   const [gameEnded, setGameEnded] = useState(false);
   const [accelerometerData, setAccelerometerData] = useState({
+    x: 0,
+    y: 0,
+    z: 0,
+  });
+  const [gyroscopeData, setGyroscopeData] = useState({
     x: 0,
     y: 0,
     z: 0,
@@ -44,25 +49,43 @@ export default function GameScreen() {
     }
   }, [gameEnded, endGame]);
 
-  // Efeito para o acelerômetro e verificação de estabilidade
+  // Efeito para os sensores e verificação de estabilidade
   useEffect(() => {
-    let subscription: any;
+    let accelerometerSubscription: any;
+    let gyroscopeSubscription: any;
 
-    const startAccelerometer = async () => {
+    const startSensors = async () => {
+      // Configura o acelerômetro
       await Accelerometer.setUpdateInterval(100);
-      subscription = Accelerometer.addListener(data => {
+      accelerometerSubscription = Accelerometer.addListener(data => {
         setAccelerometerData(data);
-        const stability = Math.abs(data.x) + Math.abs(data.y);
-        setIsStable(stability < 0.3);
+      });
+
+      // Configura o giroscópio
+      await Gyroscope.setUpdateInterval(100);
+      gyroscopeSubscription = Gyroscope.addListener(data => {
+        setGyroscopeData(data);
       });
     };
 
-    startAccelerometer();
+    startSensors();
 
     return () => {
-      subscription?.remove();
+      accelerometerSubscription?.remove();
+      gyroscopeSubscription?.remove();
     };
   }, []);
+
+  // Efeito para calcular estabilidade combinando acelerômetro e giroscópio
+  useEffect(() => {
+    // Calcula a estabilidade usando ambos os sensores
+    const accelerometerStability = Math.abs(accelerometerData.x) + Math.abs(accelerometerData.y);
+    const gyroscopeStability = Math.abs(gyroscopeData.x) + Math.abs(gyroscopeData.y);
+
+    // Dispositivo é considerado estável se ambos os sensores indicarem estabilidade
+    const isDeviceStable = accelerometerStability < 0.3 && gyroscopeStability < 0.3;
+    setIsStable(isDeviceStable);
+  }, [accelerometerData, gyroscopeData]);
 
   // Efeito para pontuação
   useEffect(() => {
@@ -94,6 +117,20 @@ export default function GameScreen() {
     return () => clearInterval(timer);
   }, []);
 
+  // Calcula a cor da bolinha baseada na estabilidade
+  const getBubbleColor = () => {
+    if (isStable) return '#007AFF'; // Azul quando estável
+    
+    // Vermelho mais intenso quando há muito movimento
+    const accelerometerMovement = Math.abs(accelerometerData.x) + Math.abs(accelerometerData.y);
+    const gyroscopeMovement = Math.abs(gyroscopeData.x) + Math.abs(gyroscopeData.y);
+    const totalMovement = (accelerometerMovement + gyroscopeMovement) / 2;
+    
+    // Quanto mais movimento, mais vermelho intenso
+    const intensity = Math.min(255, Math.floor(255 * (1 + totalMovement)));
+    return `rgb(${intensity}, 0, 0)`;
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -108,9 +145,10 @@ export default function GameScreen() {
             {
               transform: [
                 { translateX: accelerometerData.x * 100 },
-                { translateY: accelerometerData.y * 100 }
+                { translateY: accelerometerData.y * 100 },
+                { rotate: `${gyroscopeData.z * 50}deg` } // Adiciona rotação baseada no giroscópio
               ],
-              backgroundColor: isStable ? '#007AFF' : '#FF3B30', // Azul quando estável, vermelho quando instável
+              backgroundColor: getBubbleColor(),
             }
           ]} 
         />
@@ -119,6 +157,15 @@ export default function GameScreen() {
       <Text style={styles.instruction}>
         Mantenha a bolinha no centro do círculo!
       </Text>
+
+      <View style={styles.debugInfo}>
+        <Text style={styles.debugText}>
+          Acelerômetro: {Math.abs(accelerometerData.x + accelerometerData.y).toFixed(3)}
+        </Text>
+        <Text style={styles.debugText}>
+          Giroscópio: {Math.abs(gyroscopeData.x + gyroscopeData.y).toFixed(3)}
+        </Text>
+      </View>
     </View>
   );
 }
@@ -166,5 +213,16 @@ const styles = StyleSheet.create({
     fontSize: 18,
     textAlign: 'center',
     color: '#666',
+    marginBottom: 20,
+  },
+  debugInfo: {
+    padding: 10,
+    backgroundColor: '#f5f5f5',
+    borderRadius: 8,
+  },
+  debugText: {
+    fontSize: 12,
+    color: '#666',
+    fontFamily: 'monospace',
   },
 });
